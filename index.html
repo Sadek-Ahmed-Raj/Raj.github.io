@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Md. Sadek Ahmed Raj — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0e1420;
+    --bg-raised:#141c2b;
+    --bg-raised-2:#182135;
+    --line:#26314a;
+    --text:#e9e7de;
+    --text-dim:#8b93a7;
+    --text-dimmer:#5c6579;
+    --amber:#e3a542;
+    --teal:#4fb3a9;
+    --red:#e06c5f;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Manrope', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--amber);color:#0e1420;}
+
+  a{color:inherit;text-decoration:none;}
+  ul{list-style:none;}
+
+  /* background texture: faint grid like graph paper / code editor gutter */
+  .grid-bg{
+    position:fixed;
+    inset:0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:64px 64px;
+    opacity:0.12;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  .wrap{
+    max-width:920px;
+    margin:0 auto;
+    padding:0 28px;
+    position:relative;
+    z-index:1;
+  }
+
+  /* ---------- top nav ---------- */
+  .topbar{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:rgba(14,20,32,0.88);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar-inner{
+    max-width:920px;
+    margin:0 auto;
+    padding:16px 28px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+  }
+  .topbar .brand{
+    font-family:var(--mono);
+    font-size:14px;
+    font-weight:600;
+    color:var(--text);
+    white-space:nowrap;
+  }
+  .topbar .brand span{color:var(--amber);}
+  .topnav{
+    display:flex;
+    gap:22px;
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--text-dim);
+    flex-wrap:wrap;
+  }
+  .topnav a{transition:color .15s ease;}
+  .topnav a:hover{color:var(--amber);}
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding:76px 0 56px;
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:40px;
+    align-items:center;
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--teal);
+    letter-spacing:.06em;
+    margin-bottom:18px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:7px;height:7px;border-radius:50%;
+    background:var(--teal);
+    box-shadow:0 0 0 3px rgba(79,179,169,0.18);
+  }
+  .hero h1{
+    font-family:var(--mono);
+    font-size:clamp(30px,5vw,46px);
+    font-weight:700;
+    line-height:1.15;
+    letter-spacing:-0.01em;
+  }
+  .hero h1 .field-string{color:var(--amber);}
+  .hero .role{
+    margin-top:14px;
+    color:var(--text-dim);
+    font-size:16.5px;
+    max-width:46ch;
+  }
+  .hero .role b{color:var(--text);font-weight:600;}
+  .hero-links{
+    margin-top:26px;
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .pill{
+    font-family:var(--mono);
+    font-size:12.5px;
+    padding:9px 14px;
+    border:1px solid var(--line);
+    border-radius:6px;
+    color:var(--text-dim);
+    transition:all .15s ease;
+  }
+  .pill:hover{border-color:var(--amber);color:var(--amber);transform:translateY(-1px);}
+  .pill.solid{
+    background:var(--amber);
+    border-color:var(--amber);
+    color:#151016;
+    font-weight:600;
+  }
+  .pill.solid:hover{color:#151016;background:#f0b45c;}
+
+  .portrait-frame{
+    width:190px;
+    height:190px;
+    border-radius:10px;
+    overflow:hidden;
+    border:1px solid var(--line);
+    position:relative;
+    background:var(--bg-raised);
+  }
+  .portrait-frame img{
+    width:100%;height:100%;object-fit:cover;display:block;
+    filter:saturate(1.02) contrast(1.03);
+  }
+  .portrait-frame::after{
+    content:"raj.jpg";
+    position:absolute;
+    bottom:0;left:0;right:0;
+    font-family:var(--mono);
+    font-size:10.5px;
+    color:var(--text-dim);
+    background:linear-gradient(transparent, rgba(14,20,32,0.92) 55%);
+    padding:22px 10px 8px;
+    text-align:center;
+    letter-spacing:.03em;
+  }
+
+  /* ---------- section shell: styled like a code comment block ---------- */
+  section{
+    padding:64px 0;
+    border-bottom:1px solid var(--line);
+  }
+  section:last-of-type{border-bottom:none;}
+  .sec-head{
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+    margin-bottom:30px;
+  }
+  .sec-num{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--text-dimmer);
+  }
+  .sec-head h2{
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--teal);
+    font-weight:600;
+  }
+  .sec-head .rule{
+    flex:1;
+    height:1px;
+    background:var(--line);
+  }
+
+  /* about */
+  .about-body{
+    font-size:16.5px;
+    color:var(--text-dim);
+    max-width:66ch;
+  }
+  .about-body b{color:var(--text);font-weight:600;}
+
+  /* education: rendered as struct records */
+  .struct-block{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--text-dimmer);
+    margin-bottom:14px;
+  }
+  .struct-block .kw{color:var(--teal);}
+  .struct-block .name{color:var(--amber);}
+
+  .record{
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:20px 22px;
+    margin-bottom:14px;
+    position:relative;
+    transition:border-color .15s ease, transform .15s ease;
+  }
+  .record:hover{border-color:var(--teal);}
+  .record .field{
+    display:grid;
+    grid-template-columns:120px 1fr;
+    gap:8px 14px;
+    font-size:14px;
+    padding:3px 0;
+  }
+  .record .field .k{
+    font-family:var(--mono);
+    font-size:11.5px;
+    color:var(--text-dimmer);
+    padding-top:2px;
+  }
+  .record .field .v{color:var(--text);}
+  .record .field .v.title{
+    font-weight:700;
+    font-size:16px;
+    color:var(--text);
+  }
+  .record .field .v .gpa{color:var(--amber);font-family:var(--mono);}
+
+  /* skills */
+  .skill-grid{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .skill-chip{
+    font-family:var(--mono);
+    font-size:13px;
+    padding:9px 14px;
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:6px;
+    color:var(--text);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .skill-chip::before{
+    content:"▸";
+    color:var(--amber);
+    font-size:11px;
+  }
+
+  /* projects: terminal cards */
+  .project-card{
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:10px;
+    margin-bottom:22px;
+    overflow:hidden;
+  }
+  .project-card .term-bar{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:11px 16px;
+    background:var(--bg-raised-2);
+    border-bottom:1px solid var(--line);
+  }
+  .term-bar .dot{width:9px;height:9px;border-radius:50%;}
+  .term-bar .dot.r{background:#e06c5f;}
+  .term-bar .dot.y{background:#e3a542;}
+  .term-bar .dot.g{background:#4fb3a9;}
+  .term-bar .path{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--text-dim);
+    margin-left:8px;
+  }
+  .project-card .term-body{padding:22px 24px;}
+  .project-card h3{
+    font-family:var(--mono);
+    font-size:18px;
+    color:var(--text);
+    margin-bottom:6px;
+  }
+  .project-card h3 .prompt{color:var(--amber);margin-right:8px;}
+  .project-card ul{margin-top:12px;}
+  .project-card li{
+    position:relative;
+    padding-left:20px;
+    margin-bottom:9px;
+    color:var(--text-dim);
+    font-size:14.5px;
+  }
+  .project-card li::before{
+    content:"//";
+    position:absolute;
+    left:0;
+    color:var(--text-dimmer);
+    font-family:var(--mono);
+    font-size:12.5px;
+  }
+  .proj-link{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    margin-top:14px;
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--teal);
+    border-bottom:1px solid transparent;
+    transition:border-color .15s ease;
+  }
+  .proj-link:hover{border-color:var(--teal);}
+  .proj-link::after{content:"→";}
+
+  /* hobbies */
+  .hobby-list{display:grid;gap:10px;}
+  .hobby-list li{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:15px;
+    color:var(--text-dim);
+    padding:12px 16px;
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:8px;
+  }
+  .hobby-list .idx{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--amber);
+    width:22px;
+  }
+
+  /* contact / footer */
+  footer{
+    padding:56px 0 60px;
+  }
+  .contact-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:14px;
+  }
+  .contact-card{
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:18px 20px;
+    transition:border-color .15s ease, transform .15s ease;
+  }
+  .contact-card:hover{border-color:var(--amber);transform:translateY(-2px);}
+  .contact-card .k{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--text-dimmer);
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    margin-bottom:8px;
+  }
+  .contact-card .v{
+    font-size:14.5px;
+    color:var(--text);
+    word-break:break-word;
+  }
+  .foot-note{
+    margin-top:44px;
+    text-align:center;
+    font-family:var(--mono);
+    font-size:11.5px;
+    color:var(--text-dimmer);
+  }
+  .foot-note .amber{color:var(--amber);}
+
+  @media (max-width:640px){
+    .hero{grid-template-columns:1fr;text-align:left;}
+    .portrait-frame{width:130px;height:130px;order:-1;}
+    .topnav{display:none;}
+    .record .field{grid-template-columns:100px 1fr;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">raj<span>.</span>dev</div>
+    <nav class="topnav">
+      <a href="#about">about</a>
+      <a href="#education">education</a>
+      <a href="#skills">skills</a>
+      <a href="#projects">projects</a>
+      <a href="#hobbies">hobbies</a>
+      <a href="#contact">contact</a>
+    </nav>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section class="hero" id="top" style="border-top:none;">
+    <div>
+      <div class="eyebrow">available for opportunities</div>
+      <h1>Md. Sadek Ahmed Raj<span class="field-string">;</span></h1>
+      <p class="role"><b>CSE Undergraduate</b> at Daffodil International University — building with data structures, algorithms and the web. I turn problems into working code, one struct at a time.</p>
+      <div class="hero-links">
+        <a class="pill solid" href="#projects">View projects</a>
+        <a class="pill" href="#contact">Contact me</a>
+        <a class="pill" href="https://github.com/Sadek-Ahmed-Raj" target="_blank" rel="noopener">GitHub</a>
+        <a class="pill" href="https://www.linkedin.com/in/sadek-ahmed-raj-997859338/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+    <div class="portrait-frame">
+      <img src="Raj.jpg" alt="Md. Sadek Ahmed Raj">
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <h2>// about me</h2>
+      <div class="rule"></div>
+    </div>
+    <p class="about-body">I'm <b>Md. Sadek Ahmed Raj</b>, a CSE student at Daffodil International University. I'm passionate about programming, web development, and solving real-world problems through technology. I enjoy learning new skills, building projects, and continuously improving myself to become a professional software engineer.</p>
+  </section>
+
+  <section id="education">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <h2>// education</h2>
+      <div class="rule"></div>
+    </div>
+    <div class="struct-block"><span class="kw">struct</span> <span class="name">EducationRecord</span> { degree, institution, duration, result }</div>
+
+    <div class="record">
+      <div class="field"><span class="k">degree</span><span class="v title">B.Sc. in Computer Science &amp; Engineering</span></div>
+      <div class="field"><span class="k">institution</span><span class="v">Daffodil International University</span></div>
+      <div class="field"><span class="k">duration</span><span class="v">2025 — Present</span></div>
+    </div>
+
+    <div class="record">
+      <div class="field"><span class="k">degree</span><span class="v title">Higher Secondary Certificate (Science)</span></div>
+      <div class="field"><span class="k">institution</span><span class="v">Gurudayal Govt. College</span></div>
+      <div class="field"><span class="k">result</span><span class="v"><span class="gpa">GPA 5.00</span> / 5.00</span></div>
+    </div>
+
+    <div class="record">
+      <div class="field"><span class="k">degree</span><span class="v title">Secondary School Certificate (Science)</span></div>
+      <div class="field"><span class="k">institution</span><span class="v">Azim Uddin High School</span></div>
+      <div class="field"><span class="k">result</span><span class="v"><span class="gpa">GPA 5.00</span> / 5.00</span></div>
+    </div>
+
+    <div class="record">
+      <div class="field"><span class="k">degree</span><span class="v title">Junior School Certificate</span></div>
+      <div class="field"><span class="k">institution</span><span class="v">Azim Uddin High School</span></div>
+      <div class="field"><span class="k">result</span><span class="v"><span class="gpa">GPA 5.00</span> / 5.00</span></div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <h2>// core skills</h2>
+      <div class="rule"></div>
+    </div>
+    <div class="skill-grid">
+      <span class="skill-chip">C</span>
+      <span class="skill-chip">C++</span>
+      <span class="skill-chip">Java</span>
+      <span class="skill-chip">HTML</span>
+      <span class="skill-chip">Data Structures</span>
+      <span class="skill-chip">Problem Solving</span>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <h2>// projects</h2>
+      <div class="rule"></div>
+    </div>
+
+    <div class="project-card">
+      <div class="term-bar">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="path">~/projects/student-management-system</span>
+      </div>
+      <div class="term-body">
+        <h3><span class="prompt">$</span>Student Management System</h3>
+        <ul>
+          <li>Implemented core data structures (linked list / structure / arrays) for managing student records.</li>
+          <li>Built key functionalities: add, search, update, delete, and display student profile data.</li>
+          <li>Handled file I/O to save and retrieve records persistently in local files.</li>
+        </ul>
+        <a class="proj-link" href="https://drive.google.com/file/d/1S2xEsGWunkXgdr14qODnhvMJKnrihZ16/view" target="_blank" rel="noopener">View project</a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="term-bar">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="path">~/projects/event-seating-allocator</span>
+      </div>
+      <div class="term-body">
+        <h3><span class="prompt">$</span>Event Seating Allocator</h3>
+        <ul>
+          <li>Applied algorithmic logic (greedy approach / backtracking / arrays) in C to automate seat allocation.</li>
+          <li>Handled seating constraints, space optimization, and conflict-free arrangements for events.</li>
+          <li>Used dynamic memory allocation (malloc / calloc) and multi-dimensional arrays for efficient logic execution.</li>
+        </ul>
+        <a class="proj-link" href="https://docs.google.com/document/d/1zus3n8AjjM-hDC1IGWhvBwei5VsNMFXO/edit#heading=h.vccul4rbd69k" target="_blank" rel="noopener">View project</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="hobbies">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <h2>// hobbies</h2>
+      <div class="rule"></div>
+    </div>
+    <ul class="hobby-list">
+      <li><span class="idx">01</span>Solving algorithmic puzzles (competitive programming)</li>
+      <li><span class="idx">02</span>Exploring and contributing to open source projects</li>
+      <li><span class="idx">03</span>Reading tech blogs and learning about new technologies</li>
+    </ul>
+  </section>
+
+  <section id="contact">
+    <div class="sec-head">
+      <span class="sec-num">06</span>
+      <h2>// contact me</h2>
+      <div class="rule"></div>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="k">Phone</div>
+        <div class="v">01627538720</div>
+      </div>
+      <div class="contact-card">
+        <div class="k">Email</div>
+        <div class="v"><a href="mailto:md.sadekahmedraj@gmail.com">md.sadekahmedraj@gmail.com</a></div>
+      </div>
+      <div class="contact-card">
+        <div class="k">LinkedIn</div>
+        <div class="v"><a href="https://www.linkedin.com/in/sadek-ahmed-raj-997859338/" target="_blank" rel="noopener">sadek-ahmed-raj</a></div>
+      </div>
+      <div class="contact-card">
+        <div class="k">GitHub</div>
+        <div class="v"><a href="https://github.com/Sadek-Ahmed-Raj" target="_blank" rel="noopener">Sadek-Ahmed-Raj</a></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot-note">built by <span class="amber">Md. Sadek Ahmed Raj</span> — © 2026</div>
+  </footer>
+
+</div>
+
+</body>
+</html>
